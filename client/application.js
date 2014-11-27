@@ -16,6 +16,7 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when('/',        {templateUrl: '/assets/html/landingpage/show'})
     .when('/login',   {templateUrl: '/assets/html/auth/login'})
+    .when('/join',    {templateUrl: '/assets/html/auth/join'})
     .when('/feed',    {templateUrl: '/assets/html/feed/show'})
     
     .otherwise({redirectTo: '/'});

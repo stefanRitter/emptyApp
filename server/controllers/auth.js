@@ -32,10 +32,41 @@ function loginTwitter (request, reply) {
   });
 }
 
+
+function login (request, reply) {
+  if (request.auth.isAuthenticated) { return reply.redirect('/'); }
+  if (request.method === 'get')     { return reply.file('html/index.html'); }
+
+  User.login(request.payload.email, request.payload.password, function (err, user) {
+    if (err) { return reply(Boom.badRequest(err)); }
+
+    request.auth.session.set({_id: user._id});
+    reply.redirect('/feed');
+  });
+}
+
+
+function join (request, reply) {
+  if (request.auth.isAuthenticated) { return reply.redirect('/'); }
+  if (request.method === 'get')     { return reply.file('html/index.html'); }
+
+  var newUser = new User();
+  newUser.email = request.payload.email;
+  newUser.password = request.payload.password;
+  newUser.save(function (err, user) {
+    if (err) { return reply(Boom.badRequest(err)); }
+    
+    request.auth.session.set({_id: user._id});
+    reply.redirect('/feed');
+  });
+}
+
+
 function logout (request, reply) {
   request.auth.session.clear();
   return reply.redirect('/');
 }
+
 
 function retrieveSession (request, reply) {
   User.findOne({_id: request.auth.credentials._id}, function (err, user) {
@@ -66,11 +97,34 @@ module.exports = function (_server) {
 
   [
     {
-      method: 'GET',
+      method: ['GET', 'POST'],
       path: '/login',
       config: {
-        handler: {
-          file: 'html/index.html'
+        handler: login,
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
+        }
+      }
+    },
+    {
+      method: ['GET', 'POST'],
+      path: '/join',
+      config: {
+        handler: join,
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: false
+          }
         }
       }
     },

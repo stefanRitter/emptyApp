@@ -10,9 +10,17 @@ module.exports = function (_server) {
       method: 'GET',
       path: '/feed',
       config: {
-        auth: 'session',
         handler: {
           file: 'html/index.html'
+        },
+        auth: {
+          mode: 'try',
+          strategy: 'session'
+        },
+        plugins: {
+          'hapi-auth-cookie': {
+            redirectTo: '/'
+          }
         }
       }
     }

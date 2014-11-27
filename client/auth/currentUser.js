@@ -3,20 +3,23 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
 
   var currentUser;
 
+  function login (user) {
+    currentUser = user;
+    $rootScope.$emit('userLoggedIn');
+    $location.path('/feed');
+  }
+
   $http
     .get('/session', {})
     .error(function () {
       console.log('user not authenticated');
     })
-    .success(function (res) {
-      currentUser = res;
-      $rootScope.$emit('userLoggedIn');
-      $location.path('/feed');
-    });
+    .success(login);
 
   return {
     get: function () {
       return currentUser;
-    }
+    },
+    login: login
   };
 }]);

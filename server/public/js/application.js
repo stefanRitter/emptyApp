@@ -26930,6 +26930,7 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
   $routeProvider
     .when('/',        {templateUrl: '/assets/html/landingpage/show'})
     .when('/login',   {templateUrl: '/assets/html/auth/login'})
+    .when('/join',    {templateUrl: '/assets/html/auth/join'})
     .when('/feed',    {templateUrl: '/assets/html/feed/show'})
     
     .otherwise({redirectTo: '/'});
@@ -26944,25 +26945,56 @@ angular.module('app').run(['$rootScope', '$location', 'currentUser', function ($
   });
 }]);
 
+angular.module('app').controller('authController', ['$http', '$location', 'currentUser', function ($http, $location, currentUser) {
+  'use strict';
+
+  var vm = this;
+
+  vm.signin = function () {
+    if (!!vm.password && !!vm.email) {
+      $http
+        .post('/login', {email: vm.email, password: vm.password})
+        .error(function (err) {
+          vm.error = err.message;
+        }) 
+        .success(currentUser.login);
+    }
+  };
+
+  vm.join = function () {
+    if (!!vm.password && !!vm.email) {
+      $http
+        .post('/join', {email: vm.email, password: vm.password})
+        .error(function (err) {
+          vm.error = err.message;
+        }) 
+        .success(currentUser.login);
+    }
+  };
+}]);
+
 angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope', function ($location, $http, $rootScope) {
   'use strict';
 
   var currentUser;
+
+  function login (user) {
+    currentUser = user;
+    $rootScope.$emit('userLoggedIn');
+    $location.path('/feed');
+  }
 
   $http
     .get('/session', {})
     .error(function () {
       console.log('user not authenticated');
     })
-    .success(function (res) {
-      currentUser = res;
-      $rootScope.$emit('userLoggedIn');
-      $location.path('/feed');
-    });
+    .success(login);
 
   return {
     get: function () {
       return currentUser;
-    }
+    },
+    login: login
   };
 }]);

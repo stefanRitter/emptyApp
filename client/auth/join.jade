@@ -4,16 +4,16 @@
     h1.margin-top.bold 
       | App Name
     
-    h2 Welcome back
+    h2 App Tagline.
 
 
     .phone-width.center-block
       a.button.blue.login-button.margin-top-big(href="/loginTwitter" target="_self" style="display:block;") 
         img(src="/assets/img/twitter.svg")
-        span Login with Twitter
+        span Join with Twitter
 
 
-      form.form(name="signinForm" ng-submit="vm.signin()")
+      form.form(name="signinForm" ng-submit="vm.join()")
 
         p.italic.margin or
 
@@ -29,6 +29,6 @@
           .red.bold.margin {{vm.error}}
 
         .form-group
-          button.medium.button.gray(type="submit") Login
+          button.medium.button.gray(type="submit") Join
           br
           span.required * required
