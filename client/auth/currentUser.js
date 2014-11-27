@@ -6,7 +6,7 @@ angular.module('app').factory('currentUser', ['$location', '$http', '$rootScope'
   $http
     .get('/session', {})
     .error(function () {
-      $location.path('/');
+      console.log('user not authenticated');
     })
     .success(function (res) {
       currentUser = res;

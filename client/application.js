@@ -14,10 +14,11 @@ angular.module('app').config(function ($routeProvider, $locationProvider) {
   $locationProvider.html5Mode(true);
 
   $routeProvider
+    .when('/',        {templateUrl: '/assets/html/landingpage/show'})
     .when('/login',   {templateUrl: '/assets/html/auth/login'})
     .when('/feed',    {templateUrl: '/assets/html/feed/show'})
     
-    .otherwise({redirectTo: '/login'});
+    .otherwise({redirectTo: '/'});
 });
 
 
