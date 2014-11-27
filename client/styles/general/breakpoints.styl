@@ -1,0 +1,23 @@
+
+iphone     = "(max-width:320px)"
+phone      = "(max-width:460px)"
+phablet    = "(max-width:768px)"
+tablet     = "(max-width:980px)"
+desktop    = "(min-width:360px)"
+typeheight = "(max-height:375px)"
+
+.phone-hide
+  @media phone
+    display none !important
+
+.phablet-hide
+  @media phablet
+    display none !important
+
+.phone-only
+  display none
+  @media phone
+    display block !important
+
+.phone-width
+  width: 300px !important
