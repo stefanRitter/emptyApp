@@ -66,6 +66,15 @@ module.exports = function (_server) {
 
   [
     {
+      method: 'GET',
+      path: '/login',
+      config: {
+        handler: {
+          file: 'html/index.html'
+        }
+      }
+    },
+    {
       method: ['GET', 'POST'],
       path: '/loginTwitter',
       config: {

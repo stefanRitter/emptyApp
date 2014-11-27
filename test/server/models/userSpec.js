@@ -15,9 +15,9 @@ var User = require('../../../server/models/User.js');
 
 describe('user model', function () {
   it('should create a new User', function (done) {
-    User.create({id: 'test'}, function (err, created) {
+    User.create({twitterId: 'test'}, function (err, created) {
       expect(err).to.equal(null);
-      expect(created.id).to.equal('test');
+      expect(created.twitterId).to.equal('test');
       done();
     });
   });
