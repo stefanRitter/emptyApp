@@ -10,7 +10,7 @@ function createSalt () {
 }
 
 function hashPwd (salt, pwd) {
-  var hmac = crypto.createHmac('sha1', salt);
+  var hmac = crypto.createHmac('md5', salt);
   return hmac.update(pwd).digest('hex');
 }
 
