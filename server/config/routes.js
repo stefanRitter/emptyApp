@@ -1,8 +1,14 @@
 'use strict';
 
+var Path = require('path'),
+    publicPath = Path.join(__dirname, '../public');
+
+console.log(publicPath + 'html/index.html');
+
 module.exports = function (config, server) {
+
   require('../controllers/auth.js')(server);
-  
+
   require('../controllers/feed.js')(server);
 
   server.route({
@@ -10,7 +16,7 @@ module.exports = function (config, server) {
     path: '/assets/{param*}',
     handler: {
       directory: {
-        path: '../public',
+        path: publicPath,
         defaultExtension: 'html'
       }
     }
@@ -20,7 +26,7 @@ module.exports = function (config, server) {
     method: 'GET',
     path: '/favicon.ico',
     handler: {
-      file: 'img/favicon.ico'
+      file: publicPath + '/img/favicon.ico'
     }
   });
 
@@ -28,7 +34,7 @@ module.exports = function (config, server) {
     method: 'GET',
     path: '/',
     handler: {
-      file: 'html/index.html'
+      file: publicPath + '/html/index.html'
     }
   });
 
