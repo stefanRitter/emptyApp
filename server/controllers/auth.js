@@ -4,6 +4,9 @@ var User = require('mongoose').model('User'),
     Boom = require('boom'),
     server = {};
 
+var Path = require('path'),
+    publicPath = Path.join(__dirname, '../public');
+
 
 function loginTwitter (request, reply) {
   var userData = request.auth.credentials;
@@ -11,7 +14,7 @@ function loginTwitter (request, reply) {
   User.findOne({_id: userData._id}, function (err, user) {
     if (err) { return reply(Boom.badImplementation(err)); }
 
-    if (!user) { 
+    if (!user) {
       var userToCreate = {
         username:      userData.profile.username,
         displayName:   userData.profile.displayName,
@@ -35,7 +38,7 @@ function loginTwitter (request, reply) {
 
 function login (request, reply) {
   if (request.auth.isAuthenticated) { return reply.redirect('/'); }
-  if (request.method === 'get')     { return reply.file('html/index.html'); }
+  if (request.method === 'get')     { return reply.file(publicPath + '/html/index.html'); }
 
   User.login(request.payload.email, request.payload.password, function (err, user) {
     if (err) { return reply(Boom.badRequest(err)); }
@@ -48,14 +51,14 @@ function login (request, reply) {
 
 function join (request, reply) {
   if (request.auth.isAuthenticated) { return reply.redirect('/'); }
-  if (request.method === 'get')     { return reply.file('html/index.html'); }
+  if (request.method === 'get')     { return reply.file(publicPath + '/html/index.html'); }
 
   var newUser = new User();
   newUser.email = request.payload.email;
   newUser.password = request.payload.password;
   newUser.save(function (err, user) {
     if (err) { return reply(Boom.badRequest(err)); }
-    
+
     request.auth.session.set({_id: user._id});
     reply.redirect('/feed');
   });

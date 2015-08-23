@@ -14,11 +14,7 @@ module.exports = function (_server) {
       path: '/feed',
       config: {
         handler: function (request, reply) {
-          if (request.auth.isAuthenticated) {
-            reply.redirect('/app');
-          } else {
-            reply.file(publicPath + '/html/index.html');
-          }
+          reply.file(publicPath + '/html/index.html');
         },
         auth: {
           mode: 'try',
